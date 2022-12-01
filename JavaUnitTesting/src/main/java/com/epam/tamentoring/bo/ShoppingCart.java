@@ -16,7 +16,7 @@ public class ShoppingCart {
         this.products = products;
     }
 
-    public void addProductToCart(Product productToAdd) {
+    public void addProductToCart(@NonNull Product productToAdd) {
         int productToAddId = productToAdd.getId();
         if (getProductIds().contains(productToAddId)) {
             double initialProductQuantity = getProductById(productToAddId).getQuantity();
@@ -27,7 +27,7 @@ public class ShoppingCart {
         }
     }
 
-    public void removeProductFromCart(Product product) {
+    public void removeProductFromCart(@NonNull Product product) {
         if (getProductIds().contains(product.getId())) {
             products.remove(product);
         } else {
