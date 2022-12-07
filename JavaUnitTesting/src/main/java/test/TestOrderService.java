@@ -20,18 +20,14 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class TestOrderService {
-//    @InjectMocks
-//    DiscountUtility discountUtilityMock = new DiscountUtility() {
-//        @Override
-//        public double calculateDiscount(UserAccount userAccount) {
-//            return 3.00;
-//        }
-//    };
-//
-//    @Mock
-//    OrderService orderServiceMock = new OrderService(discountUtilityMock);
+    @InjectMocks
+    DiscountUtility discountUtilityMock = new DiscountUtility() {
+        @Override
+        public double calculateDiscount(UserAccount userAccount) {
+            return 3.00;
+        }
+    };
     UserAccount johnSmith;
-    DiscountUtility discountUtilityMock;
 
 
     @BeforeEach
@@ -39,18 +35,15 @@ public class TestOrderService {
         List<Product> shoppingList = new ArrayList<>();
         ShoppingCart shoppingCart = new ShoppingCart(shoppingList);
         johnSmith = new UserAccount("John", "Smith", "1990/10/10", shoppingCart);
-        discountUtilityMock = Mockito.mock(DiscountUtility.class);
     }
 
     @Test
     public void testDiscount() {
-        Mockito.when(discountUtilityMock.calculateDiscount(johnSmith)).thenReturn(3.00);
-
         assertEquals(3, discountUtilityMock.calculateDiscount(johnSmith));
     }
 
     @Test
-    public void testMockedObjectCalledOnce() {
+    public void testMockedObjectCalledOnce(@Mock DiscountUtility discountUtilityMock) {
         discountUtilityMock.calculateDiscount(johnSmith);
         verify(discountUtilityMock).calculateDiscount(johnSmith);
 
@@ -58,7 +51,7 @@ public class TestOrderService {
     }
 
     @Test
-    public void testNoOtherInteractionsWithMockedObject() {
+    public void testNoOtherInteractionsWithMockedObject(@Mock DiscountUtility discountUtilityMock) {
         ArgumentCaptor<UserAccount> captor = ArgumentCaptor.forClass(UserAccount.class);
         Mockito.when(discountUtilityMock.calculateDiscount(captor.capture())).thenReturn(3.00);
 
